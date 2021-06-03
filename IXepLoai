@@ -1,0 +1,5 @@
+package Lab06;
+
+public interface IXepLoai {
+    public String getHocLuc();
+}
