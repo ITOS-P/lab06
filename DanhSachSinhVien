@@ -1,0 +1,86 @@
+package Lab06;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class DanhSachSinhVien {
+    private ArrayList<SinhVien> a = new ArrayList<SinhVien>();
+       public void DocFile(String tenFile) {
+        try {
+            File f = new File(tenFile);
+            if (f.exists()) {
+                Scanner read = new Scanner(f);
+                while(read.hasNext()){
+                    Scanner line = new Scanner(read.nextLine());
+                    SinhVien x ;
+                    String ma, ht="", qq="";
+                    int ns;
+                    boolean gt;
+                    double m1,m2,m3;
+                    ma = line.next();
+                    while (!line.hasNextBoolean())
+                        ht = ht + line.next()+" ";
+                        ht=ht.trim();
+                        gt = line.nextBoolean();
+                        ns=line.nextInt();
+                        m1=line.nextDouble();
+                        m2=line.nextDouble();
+                        if(line.hasNext()){
+                            m3=line.nextDouble();
+                            a.add(new CNTT(ma,ht,ns,gt,m1,m2,m3));
+                        }else a.add(new KT(ma,ht,ns,gt,m1,m2));
+                }
+            }else System.out.println("file khong ton tai");
+        }catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    public void demSinhVienCNTT(){
+        int dem1 = 0;
+        for(SinhVien x: a)
+            if(x instanceof CNTT) dem1++;
+        System.out.println("2. So luong sinh vien CNTT: " + dem1);
+    }
+    public void demSinhVienKT(){
+        int dem2 = 0;
+        for(SinhVien x: a)
+            if(x instanceof KT) dem2++;
+        System.out.println("3. So luong sinh vien Kinh te: " + dem2);
+    }
+    public void maxDiemTB(){
+        SinhVien x = a.get(0);
+        for(int i=1;i<a.size();i++)
+            if(x.getDiemTB()<a.get(i).getDiemTB())
+                 x=a.get(i);
+        System.out.println("4. Max diem TB: " +x );
+    }
+    public void demSinhVienGioi(){
+        int dem3= 0;
+        for(SinhVien x: a){
+            if(x instanceof CNTT && ((CNTT)x).getHocLuc()==" Gioi ") dem3++;
+            if(x instanceof KT && ((KT)x).getHocLuc()==" Gioi ") dem3++;
+        }
+        System.out.println("5. So sinh vien gioi: " + dem3);
+    }
+    public void xuat(String noiDung){
+        System.out.println(noiDung);
+        for(SinhVien x: a){
+            System.out.println(x);
+        }
+    }
+    public void output(){
+        System.out.println("CS311-D-Lab6-ToQuangPhu");
+        xuat("1. Xuat danh sach sinh vien:");
+        demSinhVienCNTT();
+        demSinhVienKT();
+        maxDiemTB();
+        demSinhVienGioi();
+    }
+    public static void main(String[] args) {
+        DanhSachSinhVien a = new DanhSachSinhVien();
+        a.DocFile("D:\\CNTT_KT.txt");
+        a.output();
+    }
+}
